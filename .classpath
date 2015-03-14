@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="/usr/java/jdk1.7.0_67-cloudera"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-hdfs/hadoop-hdfs.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-ant.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-examples.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-test.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-tools.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop/hadoop-annotations-2.5.0-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-ant-2.5.0-mr1-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop/hadoop-auth-2.5.0-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop/hadoop-common-2.5.0-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-examples-2.5.0-mr1-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-hdfs/hadoop-hdfs-2.5.0-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-hdfs/hadoop-hdfs-2.5.0-cdh5.3.0-tests.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-test-2.5.0-mr1-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-tools-2.5.0-mr1-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/usr/lib/hadoop-0.20-mapreduce/hadoop-core-2.5.0-mr1-cdh5.3.0.jar"/>
+	<classpathentry kind="lib" path="/home/cloudera/Dropbox/CS 236 Database Project/DistributedIndexing/lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/cloudera/Dropbox/CS 236 Database Project/DistributedIndexing/lib/jsoup-1.8.1.jar"/>
+	<classpathentry kind="lib" path="/home/cloudera/Dropbox/CS 236 Database Project/DistributedIndexing/lib/leveldbjni-all-1.8.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
