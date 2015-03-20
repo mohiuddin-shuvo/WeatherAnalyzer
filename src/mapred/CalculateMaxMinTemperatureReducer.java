@@ -79,6 +79,39 @@ public class CalculateMaxMinTemperatureReducer extends MapReduceBase implements 
 		
 		}
 	}
+	public int getDayMonth(int month)
+	{
+		switch(month)
+		{
+			 
+			case 2: 
+				return 28;
+				 
+			 
+			case 4: 
+				return 30;
+				 
+			 
+				 
+			case 6: 
+				return 30;
+				 
+			 
+				 
+			case 9: 
+				return 30;
+				 
+			  
+			case 11: 
+				return 30;
+				 
+			 
+				 
+			default:
+				return 31;
+		
+		}
+	}
     public void reduce(Text key, Iterator<Text> values, OutputCollector<Text, Text> output, Reporter reporter) throws IOException
 	{
     	Map<Integer,RecordByMonth> readingByMonth= new HashMap<Integer,RecordByMonth>(); 
@@ -106,7 +139,7 @@ public class CalculateMaxMinTemperatureReducer extends MapReduceBase implements 
 	        	 {
 	        		 RecordByMonth record= new RecordByMonth();
 	        		 record.temp = temp;
-	        		 record.dewp = dewp;
+	        		 record.prec = dewp;
 	        		 record.count = 1;
 	        		 readingByMonth.put(month, record);
 	        		 //dewpByMonth.put(month, dewp);
@@ -118,7 +151,7 @@ public class CalculateMaxMinTemperatureReducer extends MapReduceBase implements 
 	        		 RecordByMonth record = readingByMonth.get(month);
 	        		 record.count++;
 	        		 record.temp = (record.temp*(record.count-1)+ temp)/record.count;
-	        		 record.dewp = (record.dewp*(record.count-1) + dewp)/record.count;
+	        		 record.prec = (record.prec*(record.count-1) + dewp)/record.count;
 	        		 
 	        		 readingByMonth.put(month, record);
 	        	 }
@@ -131,23 +164,26 @@ public class CalculateMaxMinTemperatureReducer extends MapReduceBase implements 
         //String outputValue= "";
         int Max_Month=0, Min_Month=0;
         Double Max_Month_Value = Double.MIN_VALUE, Min_Month_Value = Double.MAX_VALUE;
+        Double Max_Month_Prec=0.0, Min_Month_Prec = 0.0;
         for(Integer month: readingByMonth.keySet())
         {
         	RecordByMonth record = readingByMonth.get(month);
         	 if(record.temp>Max_Month_Value)
         	 {
         		 Max_Month_Value=record.temp;
+        		 Max_Month_Prec= record.prec;
         		 Max_Month = month;
         	 }
         		 
         	 if(record.temp<Min_Month_Value)
         	 {
         		 Min_Month_Value=record.temp;
+        		 Min_Month_Prec = record.prec;
         		 Min_Month = month;
         	 }
         }
          
-		output.collect(key, new Text( roundOff(Max_Month_Value, 2) + ","+getMonthName(Max_Month)+" "+ roundOff(Min_Month_Value, 2)+","+getMonthName(Min_Month)+" "+(roundOff(Max_Month_Value-Min_Month_Value, 2))));
+		output.collect(key, new Text( roundOff(Max_Month_Value, 2) + ","+  roundOff(Max_Month_Prec*getDayMonth(Max_Month), 2) + ","+ getMonthName(Max_Month)+" "+ roundOff(Min_Month_Value, 2)+","+roundOff(Min_Month_Prec*getDayMonth(Min_Month), 2) + ","+getMonthName(Min_Month)+" "+(roundOff(Max_Month_Value-Min_Month_Value, 2))));
         
 
            

@@ -58,11 +58,13 @@ public class FindStableWeatherState {
 		
 		Path firstOutputPath = new Path("input/firstOutput");
         Path secondOutputPath = new Path("input/secondOutput");
-        
-		JobConf job = new JobConf();
+
+        long startTime, stopTime, elapsedTime;                
+                       
+		
+        JobConf job = new JobConf();
 		job.setJarByClass(getClass());
 		job.setJobName("invertedindex");
-
 		 
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
@@ -70,16 +72,12 @@ public class FindStableWeatherState {
          
 		job.setReducerClass(JoinReducer.class);
 		
-	     MultipleInputs.addInputPath(job, new Path(getInputPathStation()), TextInputFormat.class, StationMapper.class);
-         MultipleInputs.addInputPath(job, new Path(getInputPathReadings()), TextInputFormat.class, ReadingsMapper.class);
+	    MultipleInputs.addInputPath(job, new Path(getInputPathStation()), TextInputFormat.class, StationMapper.class);
+        MultipleInputs.addInputPath(job, new Path(getInputPathReadings()), TextInputFormat.class, ReadingsMapper.class);
 		
-		 
-         
-		 		
-		 FileOutputFormat.setOutputPath(job, firstOutputPath);
-		 
-
-		 
+		FileOutputFormat.setOutputPath(job, firstOutputPath);
+		 					   
+	    
 		JobConf job2 = new JobConf();
 		job2.setJarByClass(getClass());
 		job2.setJobName("secondJob");
@@ -95,8 +93,7 @@ public class FindStableWeatherState {
 		job2.setReducerClass(CalculateMaxMinTemperatureReducer.class);
 		if (getOutputPath() != null) {			
 			FileOutputFormat.setOutputPath(job2, secondOutputPath);
-		}
-		 
+		}		 		
 		
 		JobConf job3 = new JobConf();
 		job3.setJarByClass(getClass());
@@ -115,12 +112,32 @@ public class FindStableWeatherState {
 		if (getOutputPath() != null) {			
 			FileOutputFormat.setOutputPath(job3, new Path(getOutputPath()));
 		}
-		 
-		//JobClient.runJob(job);
-		//JobClient.runJob(job2);
+		
+		startTime = System.currentTimeMillis();
+		
+		JobClient.runJob(job);
+		
+		stopTime = System.currentTimeMillis();
+	    elapsedTime = stopTime - startTime;
+	    System.out.println("******************** First Job : " + elapsedTime/1000);
+	    
+	    startTime = System.currentTimeMillis();
+	    
+		JobClient.runJob(job2);
+		
+		stopTime = System.currentTimeMillis();
+	    elapsedTime = stopTime - startTime;
+	    System.out.println("******************** Second Job : " + elapsedTime/1000);
+	    
+	    startTime = System.currentTimeMillis();
+	    
 		JobClient.runJob(job3);
 		
-		return "";
+		stopTime = System.currentTimeMillis();
+	    elapsedTime = stopTime - startTime;
+	    System.out.println("******************** Third Job : " + elapsedTime/1000);
+		
+	    return "";
 	}
 
 	/**

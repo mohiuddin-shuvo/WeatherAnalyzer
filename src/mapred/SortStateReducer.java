@@ -15,10 +15,7 @@ import org.apache.hadoop.mapred.Reporter;
 public class SortStateReducer extends MapReduceBase implements Reducer<DoubleWritable, Text, Text, Text> {
 
 	   
-    //Variables to aid the join process
-    //private String customerName,deliveryReport;
-    /*Map to store Delivery Codes and Messages
-    Key being the status code and vale being the status message*/
+   
     private static Map<Integer,RecordByMonth> readingByMonth= new HashMap<Integer,RecordByMonth>();
    
     /*public void configure(JobConf job)

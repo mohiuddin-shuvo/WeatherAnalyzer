@@ -18,19 +18,6 @@ import org.apache.hadoop.mapred.Reporter;
 
 public class JoinReducer extends MapReduceBase implements Reducer<Text, Text, Text, Text> {
 
-	   
-       //Variables to aid the join process
-       //private String customerName,deliveryReport;
-       /*Map to store Delivery Codes and Messages
-       Key being the status code and vale being the status message*/
-       //private static    
-       /*public void configure(JobConf job)
-       {
-              //To load the Delivery Codes and Messages into a hash map
-              loadDeliveryStatusCodes();
-             
-       }*/
-
 
        public void reduce(Text key, Iterator<Text> values, OutputCollector<Text, Text> output, Reporter reporter) throws IOException
 	    {
@@ -50,12 +37,12 @@ public class JoinReducer extends MapReduceBase implements Reducer<Text, Text, Te
 	            	  
 	            	 int month =Integer.parseInt(valueSplitted[1].trim());
 	            	 double temp =Double.parseDouble(valueSplitted[2].trim());
-	            	 double dewp = Double.parseDouble(valueSplitted[3].trim());
+	            	 double prec = Double.parseDouble(valueSplitted[3].trim());
 	            	 if(!readingByMonth.containsKey(month))
 	            	 {
 	            		 RecordByMonth record= new RecordByMonth();
 	            		 record.temp = temp;
-	            		 record.dewp = dewp;
+	            		 record.prec = prec;
 	            		 record.count = 1;
 	            		 readingByMonth.put(month, record);
 	            		 //dewpByMonth.put(month, dewp);
@@ -67,7 +54,7 @@ public class JoinReducer extends MapReduceBase implements Reducer<Text, Text, Te
 	            		 RecordByMonth record = readingByMonth.get(month);
 	            		 record.count++;
 	            		 record.temp = ((record.temp*(record.count-1))+ temp)/record.count;
-	            		 record.dewp = ((record.dewp*(record.count-1)) + dewp)/record.count;
+	            		 record.prec = ((record.prec*(record.count-1)) + prec)/record.count;
 	            		 readingByMonth.remove(month);
 	            		 readingByMonth.put(month, record);
 	            	 }
@@ -88,7 +75,7 @@ public class JoinReducer extends MapReduceBase implements Reducer<Text, Text, Te
 	        	RecordByMonth record = readingByMonth.get(month);
 	        	if(!outputValue.equals(""))
 	        		outputValue += "+";
-	        	outputValue+=month.toString()+"+"+record.temp+"+"+record.dewp;
+	        	outputValue+=month.toString()+"+"+record.temp+"+"+record.prec;
 	        	
 	        }
 	        if(!"".equals(state) && !"".equals(outputValue))

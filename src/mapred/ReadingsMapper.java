@@ -12,7 +12,50 @@ public class ReadingsMapper extends MapReduceBase implements Mapper<LongWritable
 {
     //variables to process Consumer Details
     private String cellNumber,customerName,fileTag="CD~";
-   
+     
+    String getPrec(String prec)
+    {
+    	if(prec.equals("99.99"))
+    		return "0";
+    	
+    	char c = prec.charAt(prec.length()-1);
+    	Double precd = Double.parseDouble(prec.substring(0, prec.length()-1));
+    	
+    	switch(c)
+    	{
+    		case 'A':
+    			precd*=4;
+    			break;
+    		case 'B':
+    			precd*=2;
+    			break;
+    		case 'C':
+    			precd*=(4/3);
+    			break;
+    		case 'D':
+    			precd*=1;
+    			break;
+    		case 'E':
+    			precd*=2;
+    			break;
+    		case 'F':
+    			precd*=1;
+    			break;
+    		case 'G':
+    			precd*=1;
+    			break;
+    		default:
+    			precd*=0;
+    			break;
+    		
+    			
+    	}
+    	
+    	return precd.toString();
+    		
+    
+    }
+    
     /* map method that process ConsumerDetails.txt and frames the initial key value pairs
        Key(Text) – mobile number
        Value(Text) – An identifier to indicate the source of input(using ‘CD’ for the customer details file) + Customer Name
@@ -24,8 +67,8 @@ public class ReadingsMapper extends MapReduceBase implements Mapper<LongWritable
         String splitarray[] = line.split("\\s+");
         //cellNumber = splitarray[0].trim();
         //customerName = splitarray[1].trim();
-        String stn, month, temp, dewp; 
-        if(splitarray.length>=4)
+        String stn, month, temp, prec; 
+        if(splitarray.length>=20)
         {
         	stn = splitarray[0].trim();
         	if(!stn.equals("STN---"))
@@ -35,9 +78,9 @@ public class ReadingsMapper extends MapReduceBase implements Mapper<LongWritable
 	        	
 	        	month = splitarray[2].trim().substring(4, 6);
 	        	temp = splitarray[3].trim();
-	        	dewp = splitarray[5].trim();
+	        	prec = splitarray[19].trim();
 	        	
-	        		output.collect(new Text(stnid.toString()), new Text("Readings+"+month+"+"+temp+"+"+dewp));
+	        	output.collect(new Text(stnid.toString()), new Text("Readings+"+month+"+"+temp+"+"+getPrec(prec)));
 	    		 
 	        		//customerName = splitarray[1].trim();
 	        	
